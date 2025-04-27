@@ -28,7 +28,7 @@ const authRoute: Routes = [
     },
     {
         key: 'homePage',
-        path: `/hello`,
+        path: `/`,  // Change this path to '/'
         component: lazy(() => import('@/views/Home')),
         authority: []
     },

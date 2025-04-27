@@ -1,6 +1,6 @@
 import { Button, Notification, toast } from '@/components/ui';
 import { useState } from 'react';
-import { BiPhone, BiSend, BiUser } from 'react-icons/bi';
+import { BiPhone, BiSend, BiUser, BiMessageSquare } from 'react-icons/bi';
 import { BsLinkedin, BsTwitter } from 'react-icons/bs';
 import { CgMail } from 'react-icons/cg';
 import { Link } from 'react-router-dom';
@@ -10,23 +10,22 @@ const ContactForm = () => {
         fullname: string;
         email: string;
         subject: string;
-        message: string
+        message: string;
     }>({
         fullname: '',
         email: '',
         subject: '',
-        message: ''
+        message: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     const [focused, setFocused] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            setIsSubmitting(true)
+            setIsSubmitting(true);
             // await apiContactUs(formState)
-            setIsSubmitting(false)
+            setIsSubmitting(false);
             toast.push(
                 <Notification
                     title={'Success'}
@@ -34,30 +33,30 @@ const ContactForm = () => {
                 >
                     Successfully submitted
                 </Notification>,
-            )
+            );
             setFormState({
                 fullname: '',
                 email: '',
                 subject: '',
-                message: ''
-            })
+                message: '',
+            });
         } catch (err) {
-            setIsSubmitting(false)
+            setIsSubmitting(false);
             toast.push(
                 <Notification
-                    title={err?.response?.data.message}
+                    title={err?.response?.data.message || 'Error'}
                     type={'danger'}
                 >
-                    {err?.response?.data.message}
+                    {err?.response?.data.message || 'Something went wrong.'}
                 </Notification>,
-            )
+            );
         }
     };
 
     const handleChange = (e) => {
         setFormState({
             ...formState,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         });
     };
 
@@ -118,9 +117,11 @@ const ContactForm = () => {
                     {/* Right Column - Contact Form */}
                     <div className="bg-gray-50 rounded-2xl shadow-lg p-4 sm:p-8">
                         <form onSubmit={handleSubmit} className="space-y-3">
+                            {/* Full Name */}
                             <div className="relative">
-                                <div className={`absolute left-3 top-1/2 -translate-y-1/2 transition-all duration-300 ${focused === 'fullName' || formState.fullname ? 'text-primary' : 'text-gray-400'
-                                    }`}>
+                                <div className={`absolute left-3 top-1/2 -translate-y-1/2 transition-all duration-300 ${
+                                    focused === 'fullname' || formState.fullname ? 'text-primary' : 'text-gray-400'
+                                }`}>
                                     <BiUser className="w-5 h-5" />
                                 </div>
                                 <input
@@ -136,9 +137,11 @@ const ContactForm = () => {
                                 />
                             </div>
 
+                            {/* Email */}
                             <div className="relative">
-                                <div className={`absolute left-3 top-1/2 -translate-y-1/2 transition-all duration-300 ${focused === 'email' || formState.email ? 'text-primary' : 'text-gray-400'
-                                    }`}>
+                                <div className={`absolute left-3 top-1/2 -translate-y-1/2 transition-all duration-300 ${
+                                    focused === 'email' || formState.email ? 'text-primary' : 'text-gray-400'
+                                }`}>
                                     <CgMail className="w-5 h-5" />
                                 </div>
                                 <input
@@ -154,9 +157,11 @@ const ContactForm = () => {
                                 />
                             </div>
 
-                            {/* <div className="relative">
-                                <div className={`absolute left-3 top-1/2 -translate-y-1/2 transition-all duration-300 ${focused === 'subject' || formState.subject ? 'text-primary' : 'text-gray-400'
-                                    }`}>
+                            {/* Subject */}
+                            <div className="relative">
+                                <div className={`absolute left-3 top-1/2 -translate-y-1/2 transition-all duration-300 ${
+                                    focused === 'subject' || formState.subject ? 'text-primary' : 'text-gray-400'
+                                }`}>
                                     <BiMessageSquare className="w-5 h-5" />
                                 </div>
                                 <input
@@ -170,8 +175,9 @@ const ContactForm = () => {
                                     className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
                                     required
                                 />
-                            </div> */}
+                            </div>
 
+                            {/* Message */}
                             <div className="relative">
                                 <textarea
                                     name="message"
@@ -186,6 +192,7 @@ const ContactForm = () => {
                                 />
                             </div>
 
+                            {/* Submit Button */}
                             <Button
                                 loading={isSubmitting}
                                 type="submit"
